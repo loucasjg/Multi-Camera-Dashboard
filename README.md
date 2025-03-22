@@ -22,3 +22,5 @@ This project allows you to view real-time video streams from multiple cameras. I
 - **Dark/Light mode**: Click the "Dark/Light Mode" button to toggle between the modes.
 - **Camera Controls**: Click "Turn On" or "Turn Off" to control each camera. You can also refresh the streams with the "Reload" button.
 - **Refresh Streams**: Click "Refresh Streams" to reload all video streams at once.
+
+![Preview Image](preview.png)
