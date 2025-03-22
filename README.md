@@ -10,7 +10,7 @@ This project allows you to view real-time video streams from multiple cameras. I
 - Button to refresh the video streams.
 - Dark/Light mode toggle.
 - Current time display.
-- Responsive interface (works on mobile and desktop).
+- Responsive interface (works on desktop but not very functional on mobile).
 
 ## Installation
 
