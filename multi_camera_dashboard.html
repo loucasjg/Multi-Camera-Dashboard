@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cameras</title>
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(135deg, #f4f7fb, #dde2e6);
+      color: #333;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      height: 100vh;
+      overflow-x: hidden;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    h1 {
+      background-color: #4E632C;
+      color: white;
+      padding: 20px 30px;
+      margin: 0;
+      font-size: 2.5rem;
+      border-radius: 8px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    h2 {
+      color: #4E632C;
+      font-size: 1.6rem;
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+
+    #main {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      padding: 20px;
+      box-sizing: border-box;
+      height: calc(100vh - 120px); 
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+
+    .camera {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      width: 100%;
+      max-width: 640px; 
+      height: 58vh;
+      flex: 1 1 45%;
+      box-sizing: border-box;
+      overflow: hidden;
+      transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
+      position: relative;
+    }
+
+    .camera:hover {
+      transform: scale(1.05);
+      box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    iframe {
+      border: none;
+      width: 100%;
+      height: 100%;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+
+    .camera button {
+      background-color: #4E632C;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      border-radius: 8px;
+      margin-top: 10px;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+      outline: none;
+      display: inline-block;
+    }
+
+    .camera button:hover {
+      background-color: #3b4d1a;
+      transform: scale(1.05);
+    }
+
+    .camera button:focus {
+      box-shadow: 0 0 0 3px rgba(0, 132, 255, 0.4);
+    }
+
+    .tasmota iframe {
+      height: 100%;
+    }
+
+    body.dark-mode {
+      background: #2c2f38;
+      color: #ddd;
+    }
+
+    body.dark-mode h1 {
+      background-color: #333;
+    }
+
+    body.dark-mode h2 {
+      color: #f4f4f4;
+    }
+
+    body.dark-mode .camera {
+      background: #444;
+      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.5);
+    }
+
+    body.dark-mode .camera button {
+      background-color: #3b4d1a;
+    }
+
+    body.dark-mode .camera button:hover {
+      background-color: #4E632C;
+    }
+
+    @media (max-width: 768px) {
+      #main {
+        height: auto;
+        padding: 10px;
+      }
+      .camera {
+        width: 100%;
+        flex: 1 1 100%;
+        height: 40vh;
+      }
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background-color: #4E632C;
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background-color: #3b4d1a;
+    }
+
+    .theme-toggle {
+      background: #4E632C;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      font-size: 1rem;
+      border-radius: 8px;
+      margin: 20px;
+      cursor: pointer;
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      transition: background-color 0.3s ease;
+    }
+
+    .theme-toggle:hover {
+      background-color: #3b4d1a;
+    }
+
+    .reload-btn {
+      background-color: #e94e77;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      font-size: 1.1rem;
+      cursor: pointer;
+      border-radius: 8px;
+      margin-top: 20px;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+      outline: none;
+    }
+
+    .reload-btn:hover {
+      background-color: #d64c70;
+      transform: scale(1.05);
+    }
+
+    .camera-controls {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .camera-controls button {
+      background-color: #ff9800;
+      color: white;
+      padding: 10px;
+      font-size: 1rem;
+      border: none;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: background-color 0.3s ease;
+    }
+
+    .camera-controls button:hover {
+      background-color: #e68900;
+    }
+
+    .credit {
+      position: absolute;
+      bottom: 10px;
+      font-size: 1rem;
+      color: #4E632C;
+      text-align: center;
+      width: 100%;
+      padding: 10px;
+    }
+
+    .credit a {
+      color: #4E632C;
+      text-decoration: none;
+    }
+
+    .credit a:hover {
+      text-decoration: underline;
+    }
+
+    #clock {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      font-size: 3rem;
+      color: #fff;
+      background-color: #4E632C;
+      padding: 8px 15px;
+      border-radius: 8px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+      font-family: 'Roboto', sans-serif;
+      text-align: center;
+    }
+  </style>
+</head>
+<body class="dark-mode">
+  <h1>Vue des Caméras</h1>
+  <button class="theme-toggle" onclick="toggleTheme()">Mode Sombre/Clair</button>
+  <button class="reload-btn" onclick="actualiserFlux()">Actualiser le flux</button>
+  <div id="main">
+    <div class="camera" id="camera1">
+      <h2>Entrée</h2>
+      <iframe src="http://192.168.1.4"></iframe>
+      <div class="camera-controls">
+        <button onclick="toggleCamera(1, 'on')">Allumer</button>
+        <button onclick="toggleCamera(1, 'off')">Éteindre</button>
+      </div>
+      <button onclick="rechargerCam(1)">Recharger</button>
+    </div>
+    <div class="camera" id="camera2">
+      <h2>Jardin</h2>
+      <iframe src="http://192.168.1.3"></iframe>
+      <div class="camera-controls">
+        <button onclick="toggleCamera(2, 'on')">Allumer</button>
+        <button onclick="toggleCamera(2, 'off')">Éteindre</button>
+      </div>
+      <button onclick="rechargerCam(2)">Recharger</button>
+    </div>
+    <div class="camera tasmota" id="camera3">
+      <h2>Webcam 1</h2>
+      <iframe src="http://192.168.1.2/"></iframe>
+      <div class="camera-controls">
+        <button onclick="toggleCamera(3, 'on')">Allumer</button>
+        <button onclick="toggleCamera(3, 'off')">Éteindre</button>
+      </div>
+      <button onclick="rechargerCam(3)">Recharger</button>
+    </div>
+    <div class="camera" id="camera4">
+      <h2>Webcam 2</h2>
+      <iframe src="http://192.168.1.1/"></iframe>
+      <div class="camera-controls">
+        <button onclick="toggleCamera(4, 'on')">Allumer</button>
+        <button onclick="toggleCamera(4, 'off')">Éteindre</button>
+      </div>
+      <button onclick="rechargerCam(4)">Recharger</button>
+    </div>
+  </div>
+
+  <div id="clock"></div>
+
+  <script>
+    function updateClock() {
+      const now = new Date();
+      const hours = now.getHours().toString().padStart(2, '0');
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      const seconds = now.getSeconds().toString().padStart(2, '0');
+      document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle('dark-mode');
+    }
+
+    setInterval(updateClock, 1000);
+
+    function actualiserFlux() {
+      const frames = document.querySelectorAll('iframe');
+      frames.forEach(frame => {
+        frame.src = frame.src;
+      });
+    }
+
+    function toggleCamera(cameraId, action) {
+      console.log(`Commande envoyée à la caméra ${cameraId}: ${action}`);
+    }
+
+    function rechargerCam(cameraId) {
+      const camera = document.getElementById(`camera${cameraId}`);
+      const iframe = camera.querySelector('iframe');
+      iframe.src = iframe.src; 
+    }
+  </script>
+</body>
+</html>
